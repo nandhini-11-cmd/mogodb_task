@@ -26,16 +26,14 @@ For tasks collection:
         Db.company_dives.find({date: {$gte:ISODate(“2020-10-15”, $lte:ISODate(“2020-10-31”)}})
          This will return company_drive collection data the satisfying condition is from oct 15 to 31st.
 
-3.	Find all the company drives and students who are appeared for the placement.    
+3.	Find all the company drives and students who are appeared for the placement.
+4.	
           Db.company_drives.aggregate([{
-                 $lookup:{
-                    From:”users”,
-                    localField : “attended_students”,
-                    foreignField:”user_id”,
-                    as: “Attended_Students”}},
-
-                    {
-                     $project:{
+                 $lookup:{    From:”users”,
+                        localField : “attended_students”,
+                      foreignField:”user_id”,
+                       as: “Attended_Students”}},
+  	                    { $project:{
                        Company:1,
                        Drive_date:1,
                     Attended_Students:{name:1, user_id:1}}}]).
