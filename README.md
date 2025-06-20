@@ -27,7 +27,7 @@ For tasks collection:
          This will return company_drive collection data the satisfying condition is from oct 15 to 31st.
 
 3.	Find all the company drives and students who are appeared for the placement.
-4.	
+   
           Db.company_drives.aggregate([{
                  $lookup:{    From:”users”,
                         localField : “attended_students”,
@@ -41,29 +41,30 @@ For tasks collection:
    it joins the company_drive collection with users collection.it will return the matched data and in the Attened_Students field. to display company name, drive date, user name and id has given 1 to project the data. here Attened_Students will be an array of objects.  
   	
 
-5. Find the number of problems solved by each user in Codekata
+4. Find the number of problems solved by each user in Codekata
    
-Db.codekata.aggregate([{
- 
- $lookup: {
-      from: "users",                     
-      localField: "user_id",        
-      foreignField: "_id",                
-     as: "user_info"               
+Db.codekata.aggregate([
+{
+$lookup: {
+    from:"users",
+    localfield:"user_id",
+    foreignfield:"_id",
+    as:"user_info"
+    }},
+    {$unwind: "$user_info"},
+    {    $projection:{
+    _id:0,
+    name:"$user_info.name",
+    Solved_problems:1
+    }    
     }
-  },
-  { $unwind: "$user_info" },   
-      {
-    $project: {
-      _id: 0,                       
-      name: "$user_info.name",     
-      email: "$user_info.email",   
-      problems_solved: 1           
-    }
-  }])
+    
+    )]
+
+
 here used codekata and user collection to this query. lookup returns the array of objects in the field usre_info. to access this used unwind to concept. it will convert the array of objects to normal object. to access easily we use unwind. else we can use $arrayElemAt to get values.
 
-4.	Find all the mentors with who has the mentee's count more than 15
+5.Find all the mentors with who has the mentee's count more than 15
 Db.mentors.aggregate([
 
 { $project:   {
